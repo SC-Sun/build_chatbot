@@ -37,7 +37,7 @@ function App() {
     });
     const system = {
       role: "system",
-      content: "Explain concepts like an expert",
+      content: "Explain all concepts like an expert",
     };
     const apiRequestBody = {
       model: "gpt-3.5-turbo",
@@ -56,7 +56,15 @@ function App() {
       })
       .then((data) => {
         console.log(data);
-      console.log(data.choices[0].message.content)});
+        console.log(data.choices[0].message.content);
+        setMessages([
+          ...chatMessages,
+          {
+            message: data.choices[0].message.content,
+            sender: "ChatGPT",
+          },
+        ]);
+      });
   };
 
   const sendHandler = async (message) => {
@@ -69,6 +77,7 @@ function App() {
     setMessages(newMessages);
     setTyping(true);
     await processMessageToChatGPT(newMessages);
+    setTyping(false);
   };
 
   return (
